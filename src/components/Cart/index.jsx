@@ -1,7 +1,49 @@
 import React from "react";
+import styles from "./cart.module.css";
+import { useCartContext } from "../../context/CartContext";
+import { CartItem } from "..";
 
-function index() {
-  return <div>your cart</div>;
-}
+const Cart = ({ setIsModalOpen }) => {
+  const { cartItems, totalCartItemsCount, totalOrderPrice } = useCartContext();
 
-export default index;
+  return (
+    <div className={styles.cartContainer}>
+      <h4 className={styles.heading}>Your Cart</h4>
+      {!totalCartItemsCount ? (
+        <div className={styles.emptyCartContainer}>
+          <img src={"/assets/images/illustration-empty-cart.svg"} />
+          <p className={styles.emptyCartQuote}>
+            Your added items will appear here
+          </p>
+        </div>
+      ) : (
+        <div>
+          {cartItems.map((item, index) => (
+            <CartItem key={index} cartItem={item} />
+          ))}
+          <div className={styles.totalOrderPrice}>
+            <p className={styles.orderTotalLabel}>Order Total</p>
+            <p className={styles.totalPrice}>
+              ${totalOrderPrice ? totalOrderPrice.toFixed(2) : 0}
+            </p>
+          </div>
+          <div className={styles.message}>
+            <img src={"/assets/images/icon-carbon-neutral.svg"} />
+            <p>
+              This is a <span className={styles.boldText}>carbon-neutral</span>{" "}
+              delivery
+            </p>
+          </div>
+          <button
+            className={styles.confirmButton}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Confirm Order
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Cart;

@@ -11,7 +11,18 @@ const Dessert = ({ product }) => {
     getCartItem,
     incrementQuantity,
     decrementQuantity,
+    removeItemFromCart,
   } = useCartContext();
+
+  const handleDecrement = () => {
+    const cartItem = getCartItem(product.name);
+    if (cartItem.quantity === 1) {
+      removeItemFromCart(product.name);
+    } else {
+      decrementQuantity(product.name);
+    }
+  };
+
   return (
     <div className={styles.productItemContainer}>
       <div className={styles.imageContainer}>
@@ -31,10 +42,7 @@ const Dessert = ({ product }) => {
       <div className={styles.productDetails}>
         {isProductInCart(product.name) ? (
           <div className={styles.cartItemButtonContainer}>
-            <div
-              className={styles.circle}
-              onClick={() => decrementQuantity(product.name)}
-            >
+            <div className={styles.circle} onClick={handleDecrement}>
               <AiOutlineMinus size={12} className={styles.icon} />
             </div>
             <p className={styles.quantity}>
