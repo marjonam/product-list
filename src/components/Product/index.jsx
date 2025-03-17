@@ -14,10 +14,12 @@ const Dessert = ({ product }) => {
     removeItemFromCart,
   } = useCartContext();
 
+  const cartItem = getCartItem(product.name);
+  const quantity = cartItem ? cartItem.quantity : 0; // Mahsulot miqdorini olish
+
   const handleDecrement = () => {
-    const cartItem = getCartItem(product.name);
-    if (cartItem.quantity === 1) {
-      removeItemFromCart(product.name);
+    if (quantity === 1) {
+      removeItemFromCart(product.name); // 1 bo‘lsa, mahsulotni umuman o‘chiradi
     } else {
       decrementQuantity(product.name);
     }
@@ -40,29 +42,27 @@ const Dessert = ({ product }) => {
       </div>
 
       <div className={styles.productDetails}>
-        {isProductInCart(product.name) ? (
+        {quantity > 0 ? (
           <div className={styles.cartItemButtonContainer}>
-            <div className={styles.circle} onClick={handleDecrement}>
+            <button className={styles.circle} onClick={handleDecrement}>
               <AiOutlineMinus size={12} className={styles.icon} />
-            </div>
-            <p className={styles.quantity}>
-              {getCartItem(product.name).quantity}
-            </p>
-            <div
+            </button>
+            <p className={styles.quantity}>{quantity}</p>
+            <button
               className={styles.circle}
               onClick={() => incrementQuantity(product.name)}
             >
               <AiOutlinePlus size={12} className={styles.icon} />
-            </div>
+            </button>
           </div>
         ) : (
-          <div
+          <button
             className={styles.addCartButton}
             onClick={() => addItemToCart(product)}
           >
             <MdAddShoppingCart size={20} />
             <span>Add to Cart</span>
-          </div>
+          </button>
         )}
         <p className={styles.productCategory}>{product.category}</p>
         <p className={styles.productName}>{product.name}</p>
