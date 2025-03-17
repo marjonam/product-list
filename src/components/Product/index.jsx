@@ -15,11 +15,11 @@ const Dessert = ({ product }) => {
   } = useCartContext();
 
   const cartItem = getCartItem(product.name);
-  const quantity = cartItem ? cartItem.quantity : 0; // Mahsulot miqdorini olish
+  const quantity = cartItem ? cartItem.quantity : 0;
 
   const handleDecrement = () => {
     if (quantity === 1) {
-      removeItemFromCart(product.name); // 1 bo‘lsa, mahsulotni umuman o‘chiradi
+      removeItemFromCart(product.name);
     } else {
       decrementQuantity(product.name);
     }
